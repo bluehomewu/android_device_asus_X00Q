@@ -2,7 +2,7 @@
 -app/AudioWizard/AudioWizard.apk
 -app/AudioWizardView/AudioWizardView.apk
 -app/QtiSystemService/QtiSystemService.apk
--app/QtiTelephonyService/QtiTelephonyService	
+-app/QtiTelephonyService/QtiTelephonyService.apk
 -app/aptxui/aptxui.apk
 -app/CallFeaturesSetting/CallFeaturesSetting.apk
 -app/QtiTelephonyService/QtiTelephonyService.apk
@@ -10,7 +10,6 @@
 -app/embms/embms.apk
 -priv-app/qcrilmsgtunnel/qcrilmsgtunnel.apk
 -app/imssettings/imssettings.apk
--app/uceShimService/uceShimService.apk
 -priv-app/ims/ims.apk
 -priv-app/CNEService/CNEService.apk
 -priv-app/dpmserviceapp/dpmserviceapp.apk
