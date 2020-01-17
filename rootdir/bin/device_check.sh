@@ -17,27 +17,6 @@
 # Check if device supports NFC
 if grep -q -w NFC /dev/block/platform/soc/c0c4000.sdhci/by-name/version; then
     echo "Device supports NFC"
-else
-    echo "Device doesn't support NFC , removing ..."
-    # Remove NFC
-    rm -rf /system/app/*Nfc*
-    rm -rf /system/etc/permissions/*nfc*
-    rm -rf /system/framework/*nfc*
-    rm -rf /system/lib/*nfc*
-    rm -rf /system/lib64/*nfc*
-    rm -rf /system/priv-app/Tag
-    rm -rf /vendor/app/SmartcardService
-    rm -rf /vendor/bin/*nfc*
-    rm -rf /vendor/bin/hw/*nfc*
-    rm -rf /vendor/etc/*nfc*
-    rm -rf /vendor/etc/init/*nfc*
-    rm -rf /vendor/etc/permissions/*nfc*
-    rm -rf /vendor/lib/libpn553_fw.so
-    rm -rf /vendor/lib/*nfc*
-    rm -rf /vendor/lib/hw/*nfc*
-    rm -rf /vendor/lib64/*nfc*
-    rm -rf /vendor/lib64/hw/*nfc*
-    rm -rf /vendor/bin/hw/android.hardware.nfc@1.1-service
 fi
 
 # Delete Goodix FP data on clean flash
