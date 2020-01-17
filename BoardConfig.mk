@@ -254,11 +254,13 @@ TARGET_USES_OLD_MNC_FORMAT := true
 BOARD_SECCOMP_POLICY := $(DEVICE_PATH)/seccomp
 
 # Security patch level
-VENDOR_SECURITY_PATCH := 2019-08-05
+VENDOR_SECURITY_PATCH := 2019-09-05
 
 # SELinux
 include device/qcom/sepolicy/sepolicy.mk
-BOARD_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy
+BOARD_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy/vendor
+BOARD_PLAT_PRIVATE_SEPOLICY_DIR += $(DEVICE_PATH)/sepolicy/private
+
 SELINUX_IGNORE_NEVERALLOWS := true
 
 # Vendor init
