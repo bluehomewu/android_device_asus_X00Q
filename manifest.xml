@@ -684,7 +684,4 @@
             <instance>imsrtpservice</instance>
         </interface>
     </hal>
-    <sepolicy>
-        <version>28.0</version>
-    </sepolicy>
 </manifest>
