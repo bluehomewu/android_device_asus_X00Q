@@ -95,26 +95,26 @@ void vendor_check_variant()
     if (sys.totalram > 4096ull * 1024 * 1024) {
         // Russian model
         if (region == "RU") {
-            build_fingerprint = "asus/RU_X00QD/ASUS_X00Q_9:9/PKQ1/16.2017.1905.053-20190513:user/release-keys";
-            product_device = "ASUS_X00Q_9";
+            build_fingerprint = "asus/RU_Phone/ASUS_X00QD:9/PPR1.180610.009/16.0615.1912.115-0:user/release-keys";
+            product_device = "ASUS_X00QD";
 
         // Global model
         } else {
-            build_fingerprint = "asus/WW_X00QD/ASUS_X00Q_3:9/PKQ1/16.2017.1905.053-20190513:user/release-keys";
-            product_device = "ASUS_X00Q_3";
+            build_fingerprint = "asus/WW_Phone/ASUS_X00QD:9/PPR1.180610.009/16.0615.1912.115-0:user/release-keys";
+            product_device = "ASUS_X00QD";
         }
 
     // 3/4 GB variants
     } else {
         // Russian model
         if (region == "RU") {
-            build_fingerprint = "asus/RU_X00QD/ASUS_X00Q_6:9/PKQ1/16.2017.1905.053-20190513:user/release-keys";
-            product_device = "ASUS_X00Q_6";
+            build_fingerprint = "asus/RU_Phone/ASUS_X00QD:9/PPR1.180610.009/16.0615.1912.115-0:user/release-keys";
+            product_device = "ASUS_X00QD";
 
         // Global model
         } else {
-            build_fingerprint = "asus/WW_X00QD/ASUS_X00Q_2:9/PKQ1/16.2017.1905.053-20190513:user/release-keys";
-            product_device = "ASUS_X00Q_2";
+            build_fingerprint = "asus/WW_Phone/ASUS_X00QD:9/PPR1.180610.009/16.0615.1912.115-0:user/release-keys";
+            product_device = "ASUS_X00QD";
         }
     }
 
