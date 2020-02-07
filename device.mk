@@ -74,6 +74,7 @@ PRODUCT_COPY_FILES += \
 # ANT+
 PRODUCT_PACKAGES += \
     AntHalService \
+    antradio_app \
     com.dsi.ant.antradio_library
 
 PRODUCT_COPY_FILES += \
@@ -237,11 +238,7 @@ PRODUCT_PACKAGES += \
 
 # GPS / Location
 PRODUCT_PACKAGES += \
-    android.hardware.gnss@1.0-impl-qti \
-    android.hardware.gnss@1.0-service-qti \
     libcurl \
-    libgnss \
-    libgnsspps \
     libsensorndkbridge
 
 PRODUCT_COPY_FILES += \

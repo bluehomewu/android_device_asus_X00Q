@@ -1,22 +1,4 @@
 <compatibility-matrix version="1.0" type="device">
-    <hal format="hidl" optional="false">
-        <name>android.hardware.audio</name>
-        <version>2.0</version>
-        <version>4.0</version>
-        <interface>
-            <name>IDevicesFactory</name>
-            <instance>default</instance>
-        </interface>
-    </hal>
-    <hal format="hidl" optional="false">
-        <name>android.hardware.audio.effect</name>
-        <version>2.0</version>
-        <version>4.0</version>
-        <interface>
-            <name>IEffectsFactory</name>
-            <instance>default</instance>
-        </interface>
-    </hal>
     <hal format="hidl" optional="true">
         <name>android.hardware.authsecret</name>
         <version>1.0</version>
@@ -114,22 +96,6 @@
         </interface>
     </hal>
     <hal format="hidl" optional="true">
-        <name>android.hardware.cas</name>
-        <version>1.0</version>
-        <interface>
-            <name>IMediaCasService</name>
-            <instance>default</instance>
-        </interface>
-    </hal>
-    <hal format="hidl" optional="false">
-        <name>android.hardware.configstore</name>
-        <version>1.0-1</version>
-        <interface>
-            <name>ISurfaceFlingerConfigs</name>
-            <instance>default</instance>
-        </interface>
-    </hal>
-    <hal format="hidl" optional="true">
         <name>android.hardware.confirmationui</name>
         <version>1.0</version>
         <interface>
@@ -145,19 +111,7 @@
             <instance>default</instance>
         </interface>
     </hal>
-    <hal format="hidl" optional="false">
-        <name>android.hardware.drm</name>
-        <version>1.0</version>
-        <interface>
-            <name>ICryptoFactory</name>
-            <instance>default</instance>
-        </interface>
-        <interface>
-            <name>IDrmFactory</name>
-            <instance>default</instance>
-        </interface>
-    </hal>
-    <hal format="hidl" optional="true">
+        <hal format="hidl" optional="true">
         <name>android.hardware.drm</name>
         <version>1.0</version>
         <version>1.1</version>
@@ -180,14 +134,6 @@
         <version>1.0</version>
         <interface>
             <name>IDumpstateDevice</name>
-            <instance>default</instance>
-        </interface>
-    </hal>
-    <hal format="hidl" optional="false">
-        <name>android.hardware.gatekeeper</name>
-        <version>1.0</version>
-        <interface>
-            <name>IGatekeeper</name>
             <instance>default</instance>
         </interface>
     </hal>
@@ -215,30 +161,6 @@
             <instance>default</instance>
         </interface>
     </hal>
-    <hal format="hidl" optional="false">
-        <name>android.hardware.graphics.allocator</name>
-        <version>2.0</version>
-        <interface>
-            <name>IAllocator</name>
-            <instance>default</instance>
-        </interface>
-    </hal>
-    <hal format="hidl" optional="false">
-        <name>android.hardware.graphics.composer</name>
-        <version>2.1-2</version>
-        <interface>
-            <name>IComposer</name>
-            <instance>default</instance>
-        </interface>
-    </hal>
-    <hal format="hidl" optional="false">
-        <name>android.hardware.graphics.mapper</name>
-        <version>2.0-1</version>
-        <interface>
-            <name>IMapper</name>
-            <instance>default</instance>
-        </interface>
-    </hal>
     <hal format="hidl" optional="true">
         <name>android.hardware.health</name>
         <version>1.0</version>
@@ -252,44 +174,11 @@
         <name>android.hardware.ir</name>
         <version>1.0</version>
     </hal>
-    <hal format="hidl" optional="false">
-        <name>android.hardware.keymaster</name>
-        <version>3.0</version>
-        <version>4.0</version>
-        <interface>
-            <name>IKeymasterDevice</name>
-            <instance>default</instance>
-        </interface>
-    </hal>
-    <hal format="hidl" optional="true">
-        <name>android.hardware.keymaster</name>
-        <version>4.0</version>
-        <interface>
-            <name>IKeymasterDevice</name>
-            <instance>strongbox</instance>
-        </interface>
-    </hal>
     <hal format="hidl" optional="true">
         <name>android.hardware.light</name>
         <version>2.0</version>
         <interface>
             <name>ILight</name>
-            <instance>default</instance>
-        </interface>
-    </hal>
-    <hal format="hidl" optional="false">
-        <name>android.hardware.media.omx</name>
-        <version>1.0</version>
-        <interface>
-            <name>IOmxStore</name>
-            <instance>default</instance>
-        </interface>
-    </hal>
-    <hal format="hidl" optional="false">
-        <name>android.hardware.media.omx</name>
-        <version>1.0</version>
-        <interface>
-            <name>IOmx</name>
             <instance>default</instance>
         </interface>
     </hal>
