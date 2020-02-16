@@ -16,12 +16,15 @@
 
 # Inherit from those products. Most specific first.
 $(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit.mk)
-$(call inherit-product, $(SRC_TARGET_DIR)/product/aosp_base_telephony.mk)
+$(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/product_launched_with_o_mr1.mk)
 
-# Inherit some common DOT OS stuff
-$(call inherit-product, vendor/havoc/config/common.mk)
-$(call inherit-product, vendor/havoc/config/common_full_phone.mk)
+# Inherit some common Lineage stuff
+$(call inherit-product, vendor/aosp/config/common_full_phone.mk)
+
+# Gapps Config
+TARGET_GAPPS_ARCH := arm64
+
 # Inherit from X00Q device
 $(call inherit-product, $(LOCAL_PATH)/device.mk)
 
