@@ -25,6 +25,9 @@ $(call inherit-product, vendor/aosp/config/common_full_phone.mk)
 # Inherit from X00Q device
 $(call inherit-product, $(LOCAL_PATH)/device.mk)
 
+# Gapps
+TARGET_GAPPS_ARCH := arm64
+
 PRODUCT_BRAND := asus
 PRODUCT_DEVICE := X00Q
 PRODUCT_MANUFACTURER := asus
