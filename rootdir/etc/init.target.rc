@@ -86,6 +86,7 @@ on post-fs-data
 on boot
     start vendor.rmt_storage
     start vendor.rfs_access
+    start vendor.wlan_prov
     write /dev/cpuset/top-app/cpus 0-7
     write /dev/cpuset/audio-app/cpus 1-2
     write /dev/cpuset/foreground/cpus 0-3
@@ -232,6 +233,13 @@ on property:init.svc.vendor.per_mgr=running
 
 on property:sys.shutdown.requested=*
     stop vendor.per_proxy
+
+service wlan_prov /vendor/bin/wlan_prov
+    class main
+    user root
+    group system wifi
+    disabled
+    oneshot
 
 service vendor.qseecomd /vendor/bin/qseecomd
    class core

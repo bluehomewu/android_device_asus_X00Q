@@ -1,0 +1,646 @@
+on init
+
+# mount asus partition
+    mkdir /factory 0775 system system
+    mkdir /asusfw 0775 system system
+    mkdir /ADF 0775 system system
+    mkdir /APD 0775 system system
+
+# mount x-rom partition
+    mkdir /xrom 0775 system system
+
+   mkdir /data/.tmp 0777 shell shell
+
+on fs
+
+
+on post-fs
+
+#ASUS_BSP Johnson : chown Vibrator attribute +++
+    chown system system /sys/class/timed_output/vibrator/vmax
+    chown system system /sys/class/timed_output/vibrator/vmax_level
+#ASUS_BSP Johnson : chown Vibrator attribute ---
+
+# ASUS_BSP +++ ShowCai "L sensor permission"
+	chown root system /dev/asusLightSensor
+    chmod 0666 /dev/asusLightSensor
+# ASUS_BSP +++ ShowCai "L sensor permission"
+
+#ASUS_BSP Jeremy : Workaround for offline issue
+    setprop sys.usb.ffs.aio_compat 1
+
+# ASUS_Clay +++ "For SensorService Log"
+    mkdir /asdf/sensor
+    restorecon_recursive /asdf/sensor
+    chmod 0777 /asdf/sensor
+# ASUS_Clay --- "For SensorService Log"
+
+on late-fs
+
+# mount factory
+    wait /dev/block/bootdevice/by-name/factory
+    exec /system/bin/e2fsck -p /dev/block/bootdevice/by-name/factory
+    mount ext4 /dev/block/bootdevice/by-name/factory /factory nosuid nodev barrier=1 noauto_da_alloc noatime
+    restorecon_recursive /factory
+    mount ext4 /dev/block/bootdevice/by-name/factory /factory remount ro nosuid nodev barrier=1 noauto_da_alloc noatime
+    chmod 0775 /factory
+    chown root shell /factory
+
+# mount asusfw
+    wait /dev/block/bootdevice/by-name/asusfw
+    exec /system/bin/e2fsck -p /dev/block/bootdevice/by-name/asusfw
+    mount ext4 /dev/block/bootdevice/by-name/asusfw /asusfw nosuid nodev barrier=1 noauto_da_alloc noatime
+    restorecon_recursive /asusfw
+    chmod 0775 /asusfw
+    chown system system /asusfw
+
+# mount x-rom
+    wait /dev/block/bootdevice/by-name/xrom
+    mount ext4 /dev/block/bootdevice/by-name/xrom /xrom ro nosuid nodev barrier=1 noauto_da_alloc noatime
+
+# +++ ASUS_BSP : add for asus boot animation partition
+# mount ADF
+    wait /dev/block/bootdevice/by-name/ADF
+    exec /system/bin/e2fsck -p /dev/block/bootdevice/by-name/ADF
+    mount ext4 /dev/block/bootdevice/by-name/ADF /ADF nosuid nodev barrier=1 noatime
+    chmod 0775 /ADF
+    chmod 0775 /ADF/boot
+    chown system system /ADF
+    restorecon_recursive /ADF
+
+#mount APD
+    wait /dev/block/bootdevice/by-name/APD
+    exec /system/bin/e2fsck -p /dev/block/bootdevice/by-name/APD
+    mount ext4 /dev/block/bootdevice/by-name/APD /APD nosuid nodev barrier=1 noatime
+    chmod 0775 /APD
+    chown system system /APD
+    restorecon_recursive /APD
+# --- ASUS_BSP : add for asus boot animation partition
+
+
+on post-fs-data
+
+# +++ ASUS_BSP : adb enable property
+    setprop factory.adbon ${ro.boot.adb.enable}
+# --- ASUS_BSP : adb enable property
+
+# ASUS_BSP  PeterYeh : add facotry tool & info for AMAX +++
+    symlink /sys/bus/mmc/devices/mmc0:0001/emmc_total_size /data/data/emmc_total_size
+    chmod 0666 /data/data/emmc_total_size
+# ASUS_BSP  PeterYeh : add facotry tool & info for AMAX +++
+
+#ASUS_BSP PeterYeh : chown LED attribute +++
+    chmod 0664 /sys/class/leds/red/brightness
+    chmod 0664 /sys/class/leds/green/brightness
+    chown system system /sys/class/leds/red/pwm_us
+    chmod 0664 /sys/class/leds/red/pwm_us
+    chown system system /sys/class/leds/green/pwm_us
+    chmod 0664 /sys/class/leds/green/pwm_us
+#ASUS_BSP PeterYeh : chown LED attribute ---
+
+# +++ ASUS_IMS
+    mkdir /data/vendor/camera 0777 camera camera
+    chmod 0777 /data/vendor/camera
+# --- ASUS_IMS
+
+# Audio calibration +++
+
+#Jessy++
+    mkdir /data/misc/aw 0777 audio audio
+    write /data/misc/aw/route_path.info 0
+    restorecon_recursive /data/misc/aw/route_path.info
+    chmod 777 /data/misc/aw/route_path.info
+    # DTS_AUDIO START
+    mkdir /data/vendor/audio/dts 0771 media audio
+
+    copy /data/misc/dts/dts_hpx_settings /data/vendor/audio/dts/dts_hpx_settings
+    chown audioserver audio /data/vendor/audio/dts/dts_hpx_settings
+    rm /data/misc/dts/dts_hpx_settings
+    rmdir /data/misc/dts
+
+    setprop ro.vendor.dts.licensepath "/vendor/etc/dts/"
+    setprop ro.vendor.dts.cfgpath "/vendor/etc/dts/"
+    # DTS_AUDIO END
+    setprop persist.vendor.asus.airingtone.map "0,46,48,50,52,54,58"
+    setprop persist.vendor.audio_hal.dsp_bit_width_enforce_mode 24
+#Jessy--
+
+    chmod 0777 /sys/bus/i2c/devices/i2c-6/6-0034/reg
+    chmod 0777 /sys/bus/i2c/devices/i2c-6/6-0034/rw
+    chmod 0777 /sys/bus/i2c/devices/i2c-6/6-0035/reg
+    chmod 0777 /sys/bus/i2c/devices/i2c-6/6-0035/rw
+
+    chown system shell /dev/i2c-6
+    chmod 0777 /dev/i2c-6
+
+    chown system shell /dev/ASUS_rpc_34
+    chmod 0777 /dev/ASUS_rpc_34
+
+    chown system shell /dev/ASUS_rpc_35
+    chmod 0777 /dev/ASUS_rpc_35
+
+    chown system shell /asusfw/audio/SPK_REC_calibration_value_range
+    chmod 0777 /asusfw/audio/SPK_REC_calibration_value_range
+
+    chown system shell /asusfw/audio/cal_self_speaker0_log.txt
+    chmod 0777 /asusfw/audio/cal_self_speaker0_log.txt
+
+    chown system shell /asusfw/audio/cal_self_speaker0_log_tmp.txt
+    chmod 0777 /asusfw/audio/cal_self_speaker0_log_tmp.txt
+
+    chown system shell /asusfw/audio/cal_self_speaker0_data_tmp.txt
+    chmod 0777 /asusfw/audio/cal_self_speaker0_data_tmp.txt
+
+    chown system shell /asusfw/audio/cal_self_recal_speaker0_log_tmp.txt
+    chmod 0777 /asusfw/audio/cal_self_recal_speaker0_log_tmp.txt
+
+    chown system shell /asusfw/audio/cal_self_receiver0_log.txt
+    chmod 0777 /asusfw/audio/cal_self_receiver0_log.txt
+
+    chown system shell /asusfw/audio/cal_self_receiver0_log_tmp.txt
+    chmod 0777 /asusfw/audio/cal_self_receiver0_log_tmp.txt
+
+    chown system shell /asusfw/audio/cal_self_receiver0_data_tmp.txt
+    chmod 0777 /asusfw/audio/cal_self_receiver0_data_tmp.txt
+
+    chown system shell /system/vendor/etc/mute_10sec.wav
+    chmod 0777 /system/vendor/etc/mute_10sec.wav
+
+    chown system shell /system/vendor/etc/mute_10sec.wav
+    chmod 0777 /system/vendor/etc/mute_10sec.wav
+
+    chown system shell /asusfw/audio/tfa98xx-sysfs.lck
+    chmod 0777 /asusfw/audio/tfa98xx-sysfs.lck
+
+# Audio calibration ---
+
+#ASUS_BSP PJ "add file path for DITNetworkFile"
+#    mkdir /data/dit_file 0771 camera camera
+     mkdir /dev/socket/dit 0777 cameraserver audio
+#ASUS_BSP Ryan "dng file save path"
+     mkdir /data/vendor/camera/com.asus.camera 0777 camera camera
+
+
+#ASUS_BSP +++ srhuang "sensors init"
+	start sensors_init
+#ASUS_BSP --- srhuang "sensors init"
+
+#ASUS_BSP +++ bill "Implement ois"
+    start ois_init
+#ASUS_BSP --- bill "Implement ois"
+
+#ASUS_BSP Lucien +++: Change for jpegHWCompress
+       chmod 0666 /dev/jpeg0
+       chmod 0666 /dev/video1
+#ASUS_BSP Lucien ---: Change for jpegHWCompress
+
+
+#ASUS_BSP Bryant add for Invensense EIS config file+++
+	rm /data/data/VStab_176x144_30_0.conf
+	rm /data/data/VStab_176x144_30_1.conf
+	rm /data/data/VStab_176x144_30_2.conf
+	rm /data/data/VStab_320x240_30_0.conf
+	rm /data/data/VStab_320x240_30_1.conf
+	rm /data/data/VStab_320x240_30_2.conf
+	rm /data/data/VStab_352x288_30_0.conf
+	rm /data/data/VStab_352x288_30_1.conf
+	rm /data/data/VStab_352x288_30_2.conf
+	rm /data/data/VStab_640x480_30_0.conf
+	rm /data/data/VStab_640x480_30_1.conf
+	rm /data/data/VStab_640x480_30_2.conf
+	rm /data/data/VStab_720x480_30_0.conf
+	rm /data/data/VStab_720x480_30_1.conf
+	rm /data/data/VStab_720x480_30_2.conf
+	rm /data/data/VStab_1280x720_30_0.conf
+	rm /data/data/VStab_1280x720_30_1.conf
+	rm /data/data/VStab_1280x720_30_2.conf
+	rm /data/data/VStab_1920x1080_30_0.conf
+	rm /data/data/VStab_1920x1080_30_1.conf
+	rm /data/data/VStab_1920x1080_30_2.conf
+
+	symlink /system/vendor/etc/camera/Invensense/VStab_640x480_30_0.conf	/data/data/VStab_640x480_30_0.conf
+	symlink /system/vendor/etc/camera/Invensense/VStab_640x480_30_1.conf	/data/data/VStab_640x480_30_1.conf
+	symlink /system/vendor/etc/camera/Invensense/VStab_640x480_30_2.conf	/data/data/VStab_640x480_30_2.conf
+	symlink /system/vendor/etc/camera/Invensense/VStab_1280x720_30_0.conf	/data/data/VStab_1280x720_30_0.conf
+	symlink /system/vendor/etc/camera/Invensense/VStab_1280x720_30_1.conf	/data/data/VStab_1280x720_30_1.conf
+	symlink /system/vendor/etc/camera/Invensense/VStab_1280x720_30_2.conf	/data/data/VStab_1280x720_30_2.conf
+	symlink /system/vendor/etc/camera/Invensense/VStab_1920x1080_30_0.conf	/data/data/VStab_1920x1080_30_0.conf
+	symlink /system/vendor/etc/camera/Invensense/VStab_1920x1080_30_1.conf	/data/data/VStab_1920x1080_30_1.conf
+	symlink /system/vendor/etc/camera/Invensense/VStab_1920x1080_30_2.conf	/data/data/VStab_1920x1080_30_2.conf
+	symlink /system/vendor/etc/camera/Invensense/VStab_2160x1080_30_0.conf	/data/data/VStab_2160x1080_30_0.conf
+	symlink /system/vendor/etc/camera/Invensense/VStab_2160x1080_30_1.conf	/data/data/VStab_2160x1080_30_1.conf
+	symlink /system/vendor/etc/camera/Invensense/VStab_2160x1080_30_2.conf	/data/data/VStab_2160x1080_30_2.conf
+#ASUS_BSP Bryant add for Invensense EIS config file---
+
+#ASUS_BSP Bryant +++ "For EIS HAL solution config."
+	symlink /vendor/etc/camera/Invensense/vstab_db_480p_video_0.config /system/etc/vstab_db_480p_video_0.config
+	symlink /vendor/etc/camera/Invensense/vstab_db_480p_video_1.config /system/etc/vstab_db_480p_video_1.config
+	symlink /vendor/etc/camera/Invensense/vstab_db_480p_video_2.config /system/etc/vstab_db_480p_video_2.config
+	symlink /vendor/etc/camera/Invensense/vstab_db_720p_video_0.config /system/etc/vstab_db_720p_video_0.config
+	symlink /vendor/etc/camera/Invensense/vstab_db_720p_video_1.config /system/etc/vstab_db_720p_video_1.config
+	symlink /vendor/etc/camera/Invensense/vstab_db_720p_video_2.config /system/etc/vstab_db_720p_video_2.config
+	symlink /vendor/etc/camera/Invensense/vstab_db_1080p_video_0.config /system/etc/vstab_db_1080p_video_0.config
+	symlink /vendor/etc/camera/Invensense/vstab_db_1080p_video_1.config /system/etc/vstab_db_1080p_video_1.config
+	symlink /vendor/etc/camera/Invensense/vstab_db_1080p_video_2.config /system/etc/vstab_db_1080p_video_2.config
+	symlink /vendor/etc/camera/Invensense/vstab_db_1080p_60_video_0.config /system/etc/vstab_db_1080p_60_video_0.config
+	symlink /vendor/etc/camera/Invensense/vstab_db_21601080p_video_0.config /system/etc/vstab_db_21601080p_video_0.config
+	symlink /vendor/etc/camera/Invensense/vstab_db_21601080p_video_1.config /system/etc/vstab_db_21601080p_video_1.config
+	symlink /vendor/etc/camera/Invensense/vstab_db_21601080p_video_2.config /system/etc/vstab_db_21601080p_video_2.config
+	symlink /vendor/etc/camera/Invensense/vstab_db_4k_video_0.config /system/etc/vstab_db_4k_video_0.config
+#ASUS_BSP Bryant --- "For EIS HAL solution config."
+
+#ASUS_BSP Bryant +++ "Set for EIS recording mute time."
+    setprop persist.invn.EIS.aud.startUs 50000
+#ASUS_BSP Bryant --- "Set for EIS recording mute time."
+
+#ASUS_BSP Bryant +++ "Set for EIS recording Video skip time."
+    setprop persist.invn.EIS.vid.startUs 900000
+#ASUS_BSP Bryant --- "Set for EIS recording Video skip time."
+
+#ASUS_BSP Bryant +++ "Set for EIS recording Audio start delay time. (160ms)"
+    setprop persist.invn.EIS.aud.delayMs 200
+#ASUS_BSP Bryant --- "Set for EIS recording Audio start delay time."
+
+#ASUS_BSP +++ bill_chen "Implement ois"
+    rm /data/data/ois_status
+    symlink /proc/driver/ois_status /data/data/ois_status
+    chmod 0777 /data/data/ois_status
+    rm /data/data/Camera_OIS_GyroCal
+    symlink /vendor/bin/Camera_OIS_GyroCal /data/data/Camera_OIS_GyroCal
+    chmod 0777 /data/data/Camera_OIS_GyroCal
+    rm /data/data/Camera_OIS
+    symlink /vendor/bin/Camera_OIS /data/data/Camera_OIS
+    chmod 0777 /data/data/Camera_OIS
+#ASUS_BSP --- bill_chen "Implement ois"
+
+# ASUS_BSP Austin_T +++ "Charger BMMI"
+	rm /data/data/USB_Thermal_Alert
+	symlink /vendor/bin/USB_Thermal_Alert /data/data/USB_Thermal_Alert
+	chmod 0777 /data/data/USB_Thermal_Alert
+	chown system shell /data/data/USB_Thermal_Alert
+
+	rm /data/data/USB_ConnectorTest
+	symlink /vendor/bin/USB_ConnectorTest /data/data/USB_ConnectorTest
+	chmod 0777 /data/data/USB_ConnectorTest
+	chown system shell /data/data/USB_ConnectorTest
+
+	rm /data/data/TypeC_Side_Detect
+	symlink /vendor/bin/TypeC_Side_Detect /data/data/TypeC_Side_Detect
+	chmod 0777 /data/data/TypeC_Side_Detect
+	chown system shell /data/data/TypeC_Side_Detect
+
+	chmod 0777 /sys/class/power_supply/battery/device/asus_usb_suspend
+	chown system shell /sys/class/power_supply/battery/device/asus_usb_suspend
+
+	rm /data/data/DisableCharging
+	symlink /vendor/bin/DisableCharging /data/data/DisableCharging
+	chmod 0777 /data/data/DisableCharging
+	chown system shell /data/data/DisableCharging
+
+	rm /data/data/EnableCharging
+	symlink /vendor/bin/EnableCharging /data/data/EnableCharging
+	chmod 0777 /data/data/EnableCharging
+	chown system shell /data/data/EnableCharging
+
+	rm /data/data/Charger_NTC_Value
+	symlink /vendor/bin/Charger_NTC_Value /data/data/Charger_NTC_Value
+	chmod 0777 /data/data/Charger_NTC_Value
+	chown system shell /data/data/Charger_NTC_Value
+
+	rm /data/data/CHG_TYPE_now
+	symlink /vendor/bin/CHG_TYPE_now /data/data/CHG_TYPE_now
+	chmod 0777 /data/data/CHG_TYPE_now
+	chown system shell /data/data/CHG_TYPE_now
+
+	rm /data/data/Adapter_ADC
+	symlink /vendor/bin/Adapter_ADC /data/data/Adapter_ADC
+	chmod 0777 /data/data/Adapter_ADC
+	chown system shell /data/data/Adapter_ADC
+
+# ASUS_BSP Austin_T --- "Charger BMMI"
+
+# Audio calibration +++
+service check_spk_audiocal /vendor/bin/sh /vendor/etc/check_spkcal.sh
+    class core
+    user root
+    group root
+    disabled
+    oneshot
+
+service check_rcv_audiocal /vendor/bin/sh /vendor/etc/check_rcvcal.sh
+    class core
+    user root
+    group root
+    disabled
+    oneshot
+
+on property:audio.calibration.spk=pass
+    start check_rcv_audiocal
+
+on property:sys.asus.audiocalibration=1
+	start check_spk_audiocal
+
+#TEST only
+on property:persist.asus.kernelmessage=7
+	start check_spk_audiocal
+#TEST only
+# Audio calibration ---
+
+on property:sys.boot_completed=1
+	start emmc_prop_init
+
+#ASUS_BSP+++ "modify about wifi path for ATD test"
+    chmod 0777 /data/misc/dhcp
+#ASUS_BSP--- "modify about wifi path for ATD test"
+
+# for sp service
+service asus_sp /system/vendor/bin/sp
+    user root
+    group root
+    seclabel u:r:vendor_init:s0
+    disabled
+    oneshot
+
+# for ssn tool
+service ssn /system/vendor/bin/ssn
+    seclabel u:r:vendor_init:s0
+    disabled
+    oneshot
+
+
+#ASUS_BSP Deeo : set io_is_busy while benchmark +++
+service StorageBench /vendor/bin/sh /vendor/etc/Storage_Benchmark.sh
+        class core
+        user root
+        oneshot
+        disabled
+
+on property:sys.foregroundapp=*
+	start StorageBench
+#ASUS_BSP Deeo : set io_is_busy while benchmark ---
+
+#ASUS_BSP +++ srhuang "sensors init"
+ service sensors_init /vendor/bin/sensors_init.sh
+    class core
+    user root
+    oneshot
+    disabled
+#ASUS_BSP --- srhuang "sensors init"
+
+#ASUS_BSP +++ bill "Implement OIS"
+service ois_init /system/bin/sh /system/vendor/etc/ois_init.sh
+        class core
+        user root
+        oneshot
+        disabled
+#ASUS_BSP --- bill "Implement OIS"
+
+#ASUS BSP WeiYu : sh "battery id status" +++
+service batt_id /system/bin/sh /vendor/etc/battID_prop.sh
+        class core
+        user root
+        oneshot
+        seclabel u:r:batt_id:s0
+
+on property:sys.boot_completed=1
+    start batt_id
+#ASUS BSP WeiYu : sh "battery id status" ---
+
+
+#ASUS_BSP PeterYeh: add for set emmc property +++
+service emmc_prop_init /vendor/bin/emmc_prop_init.sh
+    class core
+    user root
+    seclabel u:r:vendor_init:s0
+    oneshot
+    disabled
+#ASUS_BSP PeterYeh: add for set emmc property ---
+
+# ASUS_BSP+++ Yunchung "add for bluetooth DUT mode test"
+service btwifimac /vendor/bin/sh /vendor/bin/btwifimac.sh
+    class core
+    user root
+    group root
+    oneshot
+    seclabel u:r:btwifimac:s0
+
+on property:sys.boot_completed=1
+    start btwifimac
+
+service qcfwver /vendor/bin/qcfwver
+    class main
+    user root
+    group root
+    oneshot
+    seclabel u:r:vendor_init:s0
+
+on property:sys.boot_completed=1
+    start qcfwver
+
+on property:persist.sys.modem.restart=*
+setprop persist.vendor.service.bdroid.ssrlvl.asus ${persist.sys.modem.restart}
+
+on property:persist.bluetooth.btsnoopenable=true
+setprop debug.bluetooth.btsnoop_status start
+
+on property:persist.bluetooth.btsnoopenable=false
+setprop debug.bluetooth.btsnoop_status stop
+
+# ASUS BSP : add for verify voucher +++
+service verifyvouchers /vendor/bin/VerifyVouchers
+	class core
+	user root
+	seclabel u:r:vendor_init:s0
+	oneshot
+	disabled
+
+on property:sys.boot_completed=1
+	start verifyvouchers
+# ASUS BSP : add for verify voucher ---
+
+#ASUS_BSP PeterYeh: add for update eMMC info +++
+on property:asus.storage.get_emmc_info=1
+	start AsusUpdateEmmc
+
+service AsusUpdateEmmc /vendor/bin/emmc_prop_init.sh
+    class core
+    seclabel u:r:vendor_init:s0
+    oneshot
+#ASUS_BSP PeterYeh: add for update eMMC info ---
+
+#ASUS_BSP +++ widevine
+service is_keybox_valid /vendor/bin/is_keybox_valid
+    class late_start
+    user root
+    group root
+    seclabel u:r:install_key_server:s0
+    disabled
+    oneshot
+
+service is_keymaster_valid /vendor/bin/is_keymaster_valid
+    class late_start
+    user root
+    group root
+	seclabel u:r:vendor_init:s0
+    disabled
+    oneshot
+
+on property:debug.check.keybox=1
+    start is_keybox_valid
+    start is_keymaster_valid
+#ASUS_BSP --- widevine
+
+# +++ ASUS_BSP : add for asus boot animation partition
+#mount APD
+on property:persist.sys.enableAPD=1
+    wait /dev/block/bootdevice/by-name/APD
+    exec /system/bin/e2fsck -p /dev/block/bootdevice/by-name/APD
+    mount ext4 /dev/block/bootdevice/by-name/APD /APD nosuid nodev barrier=1 noatime
+    chmod 0775 /APD
+    chown system system /APD
+    restorecon_recursive /APD
+# ASUS BSP Austin_T : add for demo app charger policy
+    write /sys/class/power_supply/battery/device/demo_app_property 1
+
+# unmount APD service
+service umountAPD /vendor/bin/sh /vendor/bin/umount_apd.sh
+    user root
+    group root
+    oneshot
+    disabled
+
+#unmount APD
+on property:persist.sys.enableAPD=0
+    start umountAPD
+# ASUS BSP Austin_T : add for demo app charger policy
+    write /sys/class/power_supply/battery/device/demo_app_property 0
+
+# Disable demoapp by default
+on property:sys.boot_completed=1
+    setprop persist.sys.enableAPD 0
+# --- ASUS_BSP : add for asus boot animation partition
+
+# for ASUS display HIT service
+on property:splendid.refreshscreen=1
+    start refreshscreen
+
+service refreshscreen /vendor/bin/ScreenRefresh
+    user root
+    group root
+    disabled
+    oneshot
+    seclabel u:r:asus_vendor_splendid:s0
+
+on property:sys.boot_completed=1
+# ASUS_BSP +++ ShawnHuang "frgb sensor permission & symlink"
+    chown root camera /dev/asusFRGBSensor
+    chmod 0666 /dev/asusFRGBSensor
+# ASUS_BSP --- ShawnHuang "frgb sensor permission & symlink"
+
+# ASUS_BSP +++ ShowCai "P sensor permission"
+    chown root system /dev/asusProxSensor
+    chmod 0666 /dev/asusProxSensor
+# ASUS_BSP --- ShowCai "P sensor permission"
+
+#ASUS_BSP Eason "rgb sensor permission & symlink"
+    chown root camera /proc/driver/asusRgbDebug
+    chown root root /proc/driver/asusRgbCalibEnable
+    chown root camera /dev/asusRgbSensor
+    chmod 0660 /dev/asusRgbSensor
+#ASUS_BSP Eason "[RGB]modify rgb service file permission"
+    chown system shell /proc/driver/asusRgbSetIT
+    symlink /vendor/bin/LaserFocus_value /data/data/RGB_status
+    symlink /vendor/bin/RGBSensor_value /data/data/RGBSensor_value
+    symlink /vendor/bin/RGBSensor_cal /data/data/RGBSensor_cal
+    symlink /vendor/bin/RGBSensor_get_golden /data/data/RGBSensor_get_golden
+
+# ASUS BSP WeiYu : add for demo battery health +++
+on property:persist.sys.stopcharging=1
+	write /sys/class/power_supply/battery/device/smartchg_stop_charging 1
+on property:persist.sys.stopcharging=0
+	write /sys/class/power_supply/battery/device/smartchg_stop_charging 0
+# ASUS BSP WeiYu : add for demo battery health ---
+# ASUS Ryder : add for glove mode switch +++
+on property:persist.asus.glove=0
+    write /sys/bus/i2c/devices/i2c-4/4-0038/glove_mode 0
+on property:persist.asus.glove=1
+    write /sys/bus/i2c/devices/i2c-4/4-0038/glove_mode 1
+# ASUS Ryder : add for glove mode switch ---
+# ASUS Ryder : add for double click mode switch +++
+on property:persist.asus.dclick=0
+    write /sys/bus/i2c/devices/i2c-4/4-0038/dclick_mode 0
+on property:persist.asus.dclick=1
+    write /sys/bus/i2c/devices/i2c-4/4-0038/dclick_mode 1
+# ASUS Ryder : add for double click mode switch ---
+# ASUS Ryder : add for swipeup mode switch +++
+on property:persist.asus.swipeup=0
+    write /sys/bus/i2c/devices/i2c-4/4-0038/swipeup_mode 0
+on property:persist.asus.swipeup=1
+	write /sys/bus/i2c/devices/i2c-4/4-0038/swipeup_mode 1
+# ASUS Ryder : add for swipeup mode switch ---
+# ASUS Ryder : add for gesture mode switch +++
+on property:persist.asus.gesture.type=*
+    start asusgesture
+# ASUS Ryder : add for gesture mode switch ---
+# ASUS Ryder add for gesture mode switch +++
+service asusgesture /vendor/bin/sh /system/vendor/bin/init.asus.gesture.sh
+    class core
+    oneshot
+# ASUS Ryder add for gesture mode switch ---
+
+# ASUS Ryder add for show touch FW ver. +++
+service touchfwver /vendor/bin/sh /system/vendor/bin/touch_fwver.sh
+    class core
+    oneshot
+# ASUS Ryder add for show touch FW ver. ---
+
+#ASUS_BSP PeterYeh: add for push media files +++
+on property:vold.decrypt=trigger_restart_framework  && property:dev.bootcomplete=1
+	start push_media_file
+
+service push_media_file /system/bin/push_media_file.sh
+    class late_start
+    user root
+    seclabel u:r:push_media_file:s0
+    group sdcard_rw
+    oneshot
+    disabled
+#ASUS_BSP PeterYeh: add for push media files ---
+
+# +++ ASUS_BSP : add for write os Info
+service writeOsInfo /vendor/bin/writeosinfo
+    class core
+    user root
+    seclabel u:r:vendor_init:s0
+    oneshot
+    disabled
+
+on property:sys.boot_completed=1
+    start writeOsInfo
+
+on property:persist.sys.setupwizard.active=*
+    start writeOsInfo
+# --- ASUS_BSP : add for write os Info
+
+#ASUS_BSP +++ "Service for asus time & timezone issue"
+service asus_settime /vendor/bin/init.asus.set_time.sh
+        user root
+        seclabel u:r:vendor_init:s0
+        oneshot
+        disabled
+
+on property:sys.boot_completed=1
+       start asus_settime
+#ASUS_BSP ---
+
+# +++ ASUS BSP : User unlock tool +++
+service writekey /vendor/bin/writekey
+	class core
+	oneshot
+	disabled
+
+on property:debug.write.asuskey=1
+	chmod 0644 /asusfw/asuskey.bin
+	start writekey
+# --- ASUS BSP : User unlock tool ---
+
