@@ -20,10 +20,7 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/product_launched_with_o_mr1.mk)
 
 # Inherit some common Lineage stuff
-$(call inherit-product, vendor/aosp/config/common_full_phone.mk)
-
-# Gapps Config
-TARGET_GAPPS_ARCH := arm64
+$(call inherit-product, vendor/havoc/config/common_full_phone.mk)
 
 # Inherit from X00Q device
 $(call inherit-product, $(LOCAL_PATH)/device.mk)
@@ -31,7 +28,7 @@ $(call inherit-product, $(LOCAL_PATH)/device.mk)
 PRODUCT_BRAND := asus
 PRODUCT_DEVICE := X00Q
 PRODUCT_MANUFACTURER := asus
-PRODUCT_NAME := aosp_X00Q
+PRODUCT_NAME := havoc_X00Q
 PRODUCT_MODEL := ZenFone 5
 TARGET_BOOT_ANIMATION_RES := 1080
 
