@@ -78,7 +78,6 @@ PRODUCT_COPY_FILES += \
 # ANT+
 PRODUCT_PACKAGES += \
     AntHalService \
-    antradio_app \
     com.dsi.ant.antradio_library
 
 PRODUCT_COPY_FILES += \
@@ -87,10 +86,6 @@ PRODUCT_COPY_FILES += \
 # AR CONFIG
 PRODUCT_COPY_FILES += \
    device/asus/X00Q/configs/android.hardware.camera.ar.xml:vendor/etc/permissions/android.hardware.camera.ar.xml
-
-# APEX
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/configs/ld.config.txt:$(TARGET_COPY_OUT_SYSTEM)/etc/swcodec/ld.config.txt
 
 # Audio
 PRODUCT_PACKAGES += \
@@ -236,8 +231,16 @@ PRODUCT_PACKAGES += \
 
 # GPS / Location
 PRODUCT_PACKAGES += \
+    android.hardware.gnss@1.0-impl-qti \
     libcurl \
-    libsensorndkbridge
+    libgnss \
+    libgnsspps \
+    libgps.utils \
+    liblocation_api \
+    libloc_core \
+    libloc_pla \
+    libsensorndkbridge \
+    libvehiclenetwork-native
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/gps/apdr.conf:$(TARGET_COPY_OUT_VENDOR)/etc/apdr.conf \
@@ -432,7 +435,13 @@ PRODUCT_COPY_FILES += \
 
 # QMI
 PRODUCT_PACKAGES += \
-    libjson
+    libjson \
+    libqti_vndfwk_detect \
+    libvndfwk_detect_jni.qti
+
+# QNS
+PRODUCT_PACKAGES += \
+    libstdc++
 
 # Recorder
 PRODUCT_PACKAGES += \
