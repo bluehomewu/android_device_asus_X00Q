@@ -22,7 +22,7 @@
 # definition file).
 #
 
-DEVICE_PATH := device/asus/X00Q
+DEVICE_PATH := device/asus/X00QD
 
 BOARD_VENDOR := asus
 
@@ -238,7 +238,7 @@ PRODUCT_EXTRA_VNDK_VERSIONS := 28
 TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/rootdir/etc/recovery.fstab
 
 # Releasetools
-TARGET_RECOVERY_UPDATER_LIBS := librecovery_updater_X00Q
+TARGET_RECOVERY_UPDATER_LIBS := librecovery_updater_X00QD
 TARGET_RELEASETOOLS_EXTENSIONS := $(DEVICE_PATH)
 
 # Power
@@ -279,4 +279,4 @@ WIFI_HIDL_FEATURE_DUAL_INTERFACE := true
 WIFI_HIDL_FEATURE_DISABLE_AP_MAC_RANDOMIZATION := true
 
 # inherit from the proprietary version
--include vendor/asus/X00Q/BoardConfigVendor.mk
+-include vendor/asus/X00QD/BoardConfigVendor.mk
