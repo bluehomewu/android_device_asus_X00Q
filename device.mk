@@ -85,7 +85,7 @@ PRODUCT_COPY_FILES += \
 
 # AR CONFIG
 PRODUCT_COPY_FILES += \
-   device/asus/X00QD/configs/android.hardware.camera.ar.xml:vendor/etc/permissions/android.hardware.camera.ar.xml
+   device/asus/X00Q/configs/android.hardware.camera.ar.xml:vendor/etc/permissions/android.hardware.camera.ar.xml
 
 # Audio
 PRODUCT_PACKAGES += \
@@ -417,7 +417,7 @@ PRODUCT_PACKAGES += \
 
 # Recovery
 PRODUCT_PACKAGES += \
-    librecovery_updater_X00QD
+    librecovery_updater_X00Q
 
 # RIL
 PRODUCT_PACKAGES += \
@@ -468,8 +468,8 @@ PRODUCT_COPY_FILES += \
 
 # Soong
 PRODUCT_SOONG_NAMESPACES += \
-    device/asus/X00QD
-
+    device/asus/X00Q
+	
 # Telephony
 PRODUCT_PACKAGES += \
     ims-ext-common \
@@ -554,4 +554,4 @@ PRODUCT_COPY_FILES += \
 #PRODUCT_PACKAGES += \
     ZenfoneParts
 
-$(call inherit-product, vendor/asus/X00QD/X00QD-vendor.mk)
+$(call inherit-product, vendor/asus/X00Q/X00Q-vendor.mk)

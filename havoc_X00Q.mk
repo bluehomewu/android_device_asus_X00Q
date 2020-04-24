@@ -26,16 +26,16 @@ $(call inherit-product, vendor/havoc/config/common_full_phone.mk)
 $(call inherit-product, $(LOCAL_PATH)/device.mk)
 
 PRODUCT_BRAND := asus
-PRODUCT_DEVICE := X00QD
+PRODUCT_DEVICE := X00Q
 PRODUCT_MANUFACTURER := asus
-PRODUCT_NAME := havoc_X00QD
+PRODUCT_NAME := havoc_X00Q
 PRODUCT_MODEL := ZenFone 5
 TARGET_BOOT_ANIMATION_RES := 1080
 
 PRODUCT_GMS_CLIENTID_BASE := android-asus
 
 TARGET_VENDOR := asus
-TARGET_VENDOR_PRODUCT_NAME := X00QD
+TARGET_VENDOR_PRODUCT_NAME := X00Q
 
 PRODUCT_BUILD_PROP_OVERRIDES += \
     PRIVATE_BUILD_DESC="walleye-user 8.1.0 OPM1.171019.021 4565141 release-keys"
