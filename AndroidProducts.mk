@@ -15,9 +15,9 @@
 #
 
 PRODUCT_MAKEFILES := \
-    $(LOCAL_DIR)/havoc_X00Q.mk
+    $(LOCAL_DIR)/aosp_X00Q.mk
 
 COMMON_LUNCH_CHOICES := \
-    havoc_X00Q-userdebug \
-    havoc_X00Q-user \
-    havoc_X00Q-eng
+    aosp_X00Q-userdebug \
+    aosp_X00Q-user \
+    aosp_X00Q-eng
